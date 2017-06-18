@@ -72,6 +72,18 @@ app.get('/ops/:ops', function(req,res){
         })
 });
 
+app.get('/ops/id/:id', function(req,res){
+		var id = req.params.id;
+
+        mongoose.model('Ops').find({ _id:id }, function (err, ops) {
+            if (err) {
+                res.send("There was a problem getting the information from the database.");
+            } else {
+                res.json(ops);
+            }
+        })
+});
+
 app.get('/wordpres/:pres', function(req,res){
         var pres = req.params.pres;
 
@@ -246,14 +258,55 @@ app.put('/wordpres/:pres', function(req,res){
         );
 });
 
+app.put('/wordpres/id/:id', function(req,res){
+        var id = req.params.id;
+
+        mongoose.model('Wordpres').findOneAndUpdate({ _id:id }, {
+
+                name:req.body.name, 
+                keywords:req.body.keywords,
+                body:req.body.body
+                
+            }, {new: true}, function(err, wordpres) {
+                    if (err) {
+                        console.log('got an error');
+                    }
+                    else{
+                        res.json(wordpres);
+                    }
+            }
+        );
+});
+
 app.put('/diagnose/:abbr', function(req,res){
         var abbr = req.params.abbr;
 
-        mongoose.model('Diagnose').findOneAndUpdate({ name:abbr }, {
+        mongoose.model('Diagnose').findOneAndUpdate({ abbreviation:abbr }, {
 
                 longterm:req.body.longterm, 
                 key:req.body.key,
                 abbreviation:req.body.abbreviation
+                
+            }, {new: true}, function(err, diagnose) {
+                    if (err) {
+                        console.log('got an error');
+                    }
+                    else{
+                        res.json(diagnose);
+                    }
+            }
+        );
+});
+
+app.put('/diagnose/id/:id', function(req,res){
+        var id = req.params.id;
+
+        mongoose.model('Diagnose').findOneAndUpdate({ _id:id }, {
+
+                longterm:req.body.longterm, 
+                key:req.body.key,
+                abbreviation:req.body.abbreviation,
+                nodes:req.body.nodes
                 
             }, {new: true}, function(err, diagnose) {
                     if (err) {
@@ -287,6 +340,25 @@ app.put('/abbreviation/:abb', function(req,res){
         );
 });
 
+app.put('/abbreviation/id/:id', function(req,res){
+        var id = req.params.id;
+
+        mongoose.model('Abbreviation').findOneAndUpdate({ _id:id }, {
+
+                word:req.body.word, 
+                abbreviation:req.body.abbreviation
+                
+            }, {new: true}, function(err, abbreviation) {
+                    if (err) {
+                        console.log('got an error');
+                    }
+                    else{
+                        res.json(abbreviation);
+                    }
+            }
+        );
+});
+
 app.put('/ops/:ops', function(req,res){
         var ops = req.params.ops;
 
@@ -294,6 +366,26 @@ app.put('/ops/:ops', function(req,res){
     	var ops = req.body.ops;
     	var nodes = req.body.nodes;
         mongoose.model('Ops').findOneAndUpdate({ ops:ops }, {
+
+                name:req.body.name, 
+                ops:req.body.ops,
+                nodes:req.body.nodes
+
+            }, {new: true}, function(err, ops) {
+                    if (err) {
+                        console.log('got an error');
+                    }
+                    else{
+                        res.json(ops);
+                    }
+            }
+        );
+});
+
+app.put('/ops/id/:id', function(req,res){
+        var id = req.params.id;
+
+        mongoose.model('Ops').findOneAndUpdate({ _id:id }, {
 
                 name:req.body.name, 
                 ops:req.body.ops,
@@ -366,6 +458,19 @@ app.delete('/abbreviation/:abb', function(req,res){
         console.log(abb);
 
         mongoose.model('Abbreviation').remove({ abbreviation:abb }, function (err, abbreviation) {
+            if (err) {
+                res.send("There was a problem deleting the information from the database.");
+            } else {
+                res.json(abbreviation);
+            }
+        })
+});
+
+app.delete('/abbreviation/id/:id', function(req,res){
+        var id = req.params.id;
+        console.log(abb);
+
+        mongoose.model('Abbreviation').remove({ _id:id }, function (err, abbreviation) {
             if (err) {
                 res.send("There was a problem deleting the information from the database.");
             } else {

@@ -125,8 +125,6 @@ app.post('/patient', function(req,res){
     var healthinsurance = req.body.healthinsurance;
 	var admission = req.body.admission;
 	var anamnese = req.body.anamnese;
-
-	
 	mongoose.model('Patient').create({
         firstname : firstname,
         lastname : lastname,
@@ -174,21 +172,6 @@ app.delete('/patient/id/:id', function(req,res){
             }
         });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.get('/wordpres', jsonParser, function(req,res){
         var options = {
